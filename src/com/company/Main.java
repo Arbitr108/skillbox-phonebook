@@ -19,20 +19,21 @@ public class Main {
                         phoneRepository.printAll();
                     } else if (Validator.isName(input) && Validator.isNumber(input)) {
                         System.out.println("Данная строка может привести к колизии данных, поэтому она не может быть использована");
-                    } else if (Validator.isName(input)) {
-                        String result = phoneRepository.searchByName(input);
-                        if (result != null)
-                            System.out.println(result);
-                        else
-                            savePhone(input);
                     } else if (Validator.isNumber(input)) {
                         String result = phoneRepository.searchByPhone(input);
                         if (result != null)
                             System.out.println(result);
                         else
                             saveName(input);
-                    } else
-                        System.out.println("Введена непонятная строка");
+                    } else if (Validator.isName(input)) {
+                        String result = phoneRepository.searchByName(input);
+                        if (result != null)
+                            System.out.println(result);
+                        else
+                            savePhone(input);
+                    } else {
+                        System.out.println("Непонятный ввод, попробуйте еще раз");
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -41,35 +42,44 @@ public class Main {
     }
 
     private static void saveName(String input) throws IOException {
-        boolean in_progress = true;
-        while (in_progress) {
+        while (true) {
             System.out.println("Введите имя данного абонента");
             String number = reader.readLine().trim();
             if (number.equals("quit"))
-                in_progress = false;
+                break;
             if (!Validator.isName(number)) {
-                System.out.println("Введено некоректное имя");
+                System.out.println("Введено некорректное имя");
             } else {
                 phoneRepository.add(input, number);
                 System.out.println("Имя успешно сохранено");
-                in_progress = false;
+                break;
             }
         }
     }
 
     private static void savePhone(String input) throws IOException {
-        boolean in_progress = true;
-        while (in_progress) {
+        while (true) {
             System.out.println("Введите номер для данного абонента");
             String number = reader.readLine().trim();
             if (number.equals("quit"))
-                in_progress = false;
-            if (!Validator.isNumber(number) || phoneRepository.hasPhone(number)) {
-                System.out.println("Введен некоректный номер");
+                break;
+            if (!Validator.isNumber(number)) {
+                System.out.println("Введен некорректный номер");
+            } else if (phoneRepository.hasPhone(number)) {
+                System.out.println("Номер уже существует. Заменить(y/n)?");
+                String command = reader.readLine().trim();
+                if (command.equals("y")) {
+                    String name = phoneRepository.searchByPhone(number);
+                    phoneRepository.remove(number);
+                    phoneRepository.add(name, number);
+                    System.out.println("Данные успешно изменены");
+                    break;
+                }
+
             } else {
                 phoneRepository.add(input, number);
                 System.out.println("Номер успешно сохранен");
-                in_progress = false;
+                break;
             }
         }
 

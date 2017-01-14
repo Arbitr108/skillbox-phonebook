@@ -2,9 +2,6 @@ package com.company;
 
 import java.util.TreeMap;
 
-/**
- * Created by asus on 12.01.2017.
- */
 public class PhoneRepository {
     private TreeMap<String, String> phonesMap = new TreeMap<>();
 
@@ -12,8 +9,8 @@ public class PhoneRepository {
         phonesMap.put(number, name);
     }
 
-    public TreeMap getAll() {
-        return phonesMap;
+    public void remove(String key) {
+        phonesMap.remove(key);
     }
 
     public String searchByPhone(String data) {
@@ -35,7 +32,7 @@ public class PhoneRepository {
 
     public void printAll() {
         for (String key : phonesMap.keySet()) {
-            System.out.println(String.format("%s:%s", key, phonesMap.get(key)));
+            System.out.println(String.format("%s:%s", phonesMap.get(key), key));
         }
     }
 }
