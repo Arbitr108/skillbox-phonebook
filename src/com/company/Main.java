@@ -3,6 +3,7 @@ package com.company;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.TreeMap;
 
 public class Main {
 
@@ -15,6 +16,8 @@ public class Main {
                 System.out.println("Введите строку для поиска:");
                 String input = reader.readLine().trim();
                 if (!input.isEmpty()) {
+                    if (input.equals("quit"))
+                        break;
                     if (input.equals("LIST")) {
                         phoneRepository.printAll();
                     } else if (Validator.isName(input) && Validator.isNumber(input)) {
@@ -26,9 +29,11 @@ public class Main {
                         else
                             saveName(input);
                     } else if (Validator.isName(input)) {
-                        String result = phoneRepository.searchByName(input);
-                        if (result != null)
-                            System.out.println(result);
+                        TreeMap<String, String> result = phoneRepository.searchByName(input);
+                        if (result != null) {
+                            for (String key : result.keySet())
+                                System.out.println(String.format("%s : %s", result.get(key), key));
+                        }
                         else
                             savePhone(input);
                     } else {
@@ -44,13 +49,13 @@ public class Main {
     private static void saveName(String input) throws IOException {
         while (true) {
             System.out.println("Введите имя данного абонента");
-            String number = reader.readLine().trim();
-            if (number.equals("quit"))
+            String name = reader.readLine().trim();
+            if (name.equals("quit"))
                 break;
-            if (!Validator.isName(number)) {
+            if (!Validator.isName(name)) {
                 System.out.println("Введено некорректное имя");
             } else {
-                phoneRepository.add(input, number);
+                phoneRepository.add(name, input);
                 System.out.println("Имя успешно сохранено");
                 break;
             }

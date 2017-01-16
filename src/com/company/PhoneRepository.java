@@ -1,6 +1,8 @@
 package com.company;
 
-import java.util.TreeMap;
+import java.lang.reflect.Array;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class PhoneRepository {
     private TreeMap<String, String> phonesMap = new TreeMap<>();
@@ -17,13 +19,16 @@ public class PhoneRepository {
         return phonesMap.get(data);
     }
 
-    public String searchByName(String data) {
+    public TreeMap<String, String> searchByName(String data) {
+        TreeMap<String, String> resultMap = new TreeMap<>();
         for (String key : phonesMap.keySet()) {
             String value = phonesMap.get(key);
             if (value.equals(data))
-                return key;
+                resultMap.put(key, value);
         }
-        return null;
+        if (resultMap.isEmpty())
+            return null;
+        return resultMap;
     }
 
     public boolean hasPhone(String phone) {
@@ -31,8 +36,14 @@ public class PhoneRepository {
     }
 
     public void printAll() {
+        HashMap<String, String> resultMap = new HashMap<>();
         for (String key : phonesMap.keySet()) {
-            System.out.println(String.format("%s:%s", phonesMap.get(key), key));
+            resultMap.put(key, phonesMap.get(key));
         }
+        resultMap
+                .entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue())
+                .forEach(e -> System.out.println(String.format("%s :%s", e.getValue(), e.getKey())));
     }
 }
