@@ -73,7 +73,6 @@ public class Main {
                 String command = reader.readLine().trim();
                 if (command.equals("y")) {
                     String name = phoneRepository.searchByPhone(number);
-                    phoneRepository.remove(number);
                     phoneRepository.add(name, number);
                     System.out.println("Данные успешно изменены");
                     break;
