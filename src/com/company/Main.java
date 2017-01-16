@@ -20,8 +20,6 @@ public class Main {
                         break;
                     if (input.equals("LIST")) {
                         phoneRepository.printAll();
-                    } else if (Validator.isName(input) && Validator.isNumber(input)) {
-                        System.out.println("Данная строка может привести к колизии данных, поэтому она не может быть использована");
                     } else if (Validator.isNumber(input)) {
                         String result = phoneRepository.searchByPhone(input);
                         if (result != null)
