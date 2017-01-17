@@ -1,18 +1,12 @@
 package com.company;
 
-import java.lang.reflect.Array;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class PhoneRepository {
     private TreeMap<String, String> phonesMap = new TreeMap<>();
 
     public void add(String name, String number) {
         phonesMap.put(number, name);
-    }
-
-    public void remove(String key) {
-        phonesMap.remove(key);
     }
 
     public String searchByPhone(String data) {
@@ -26,8 +20,6 @@ public class PhoneRepository {
             if (value.equals(data))
                 resultMap.put(key, value);
         }
-        if (resultMap.isEmpty())
-            return null;
         return resultMap;
     }
 
