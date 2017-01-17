@@ -16,9 +16,8 @@ public class PhoneRepository {
     public TreeMap<String, String> searchByName(String data) {
         TreeMap<String, String> resultMap = new TreeMap<>();
         for (String key : phonesMap.keySet()) {
-            String value = phonesMap.get(key);
-            if (value.equals(data))
-                resultMap.put(key, value);
+            if (phonesMap.get(key).equals(data))
+                resultMap.put(key, data);
         }
         return resultMap;
     }
