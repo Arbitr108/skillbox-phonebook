@@ -25,15 +25,15 @@ public class Main {
                         if (result != null)
                             System.out.println(result);
                         else
-                            saveName(input);
+                            saveNameFor(input);
                     } else if (Validator.isName(input)) {
                         TreeMap<String, String> result = phoneRepository.searchByName(input);
-                        if (result != null) {
+                        if (!result.isEmpty()) {
                             for (String key : result.keySet())
                                 System.out.println(String.format("%s : %s", result.get(key), key));
                         }
                         else
-                            savePhone(input);
+                            savePhoneFor(input);
                     } else {
                         System.out.println("Непонятный ввод, попробуйте еще раз");
                     }
@@ -44,7 +44,7 @@ public class Main {
         }
     }
 
-    private static void saveName(String input) throws IOException {
+    private static void saveNameFor(String personPhone) throws IOException {
         while (true) {
             System.out.println("Введите имя данного абонента");
             String name = reader.readLine().trim();
@@ -53,14 +53,14 @@ public class Main {
             if (!Validator.isName(name)) {
                 System.out.println("Введено некорректное имя");
             } else {
-                phoneRepository.add(name, input);
+                phoneRepository.add(name, personPhone);
                 System.out.println("Имя успешно сохранено");
                 break;
             }
         }
     }
 
-    private static void savePhone(String input) throws IOException {
+    private static void savePhoneFor(String personName) throws IOException {
         while (true) {
             System.out.println("Введите номер для данного абонента");
             String number = reader.readLine().trim();
@@ -69,17 +69,18 @@ public class Main {
             if (!Validator.isNumber(number)) {
                 System.out.println("Введен некорректный номер");
             } else if (phoneRepository.hasPhone(number)) {
-                System.out.println("Номер уже существует. Заменить(y/n)?");
+                System.out.println("Номер уже существует. Изменить имя абонента(y/n)?");
                 String command = reader.readLine().trim();
                 if (command.equals("y")) {
-                    String name = phoneRepository.searchByPhone(number);
-                    phoneRepository.add(name, number);
-                    System.out.println("Данные успешно изменены");
+                    if (phoneRepository.update(personName, number) != null)
+                        System.out.println("Данные успешно изменены");
+                    else
+                        System.out.println("Данные не удалось изменить");
                     break;
                 }
 
             } else {
-                phoneRepository.add(input, number);
+                phoneRepository.add(personName, number);
                 System.out.println("Номер успешно сохранен");
                 break;
             }

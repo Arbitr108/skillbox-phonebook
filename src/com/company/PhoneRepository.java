@@ -9,6 +9,10 @@ public class PhoneRepository {
         phonesMap.put(number, name);
     }
 
+    public String update(String name, String number) {
+        return phonesMap.replace(number, name);
+    }
+
     public String searchByPhone(String data) {
         return phonesMap.get(data);
     }
