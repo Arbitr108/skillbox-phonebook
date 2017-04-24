@@ -1,5 +1,9 @@
 package com.company;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import java.io.*;
 import java.util.*;
 
 public class PhoneRepository {
@@ -40,5 +44,27 @@ public class PhoneRepository {
                 .stream()
                 .sorted(Map.Entry.comparingByValue())
                 .forEach(e -> System.out.println(String.format("%s :%s", e.getValue(), e.getKey())));
+    }
+
+    public void export(File exportFile) throws IOException {
+
+        if (exportFile.getParentFile().exists() || exportFile.getParentFile().mkdirs()) {
+            if (!exportFile.exists())
+                exportFile.createNewFile();
+
+            JSONArray array = new JSONArray();
+            for (String key : phonesMap.keySet()) {
+                JSONObject object = new JSONObject();
+                object.put("name", phonesMap.get(key));
+                object.put("phone", key);
+                array.add(object.toJSONString());
+            }
+
+            try (FileWriter fileWriter = new FileWriter(exportFile)) {
+                fileWriter.write(array.toString());
+                fileWriter.flush();
+                fileWriter.close();
+            }
+        }
     }
 }

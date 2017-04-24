@@ -1,8 +1,6 @@
 package com.company;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.TreeMap;
 
 public class Main {
@@ -18,7 +16,12 @@ public class Main {
                 if (!input.isEmpty()) {
                     if (input.equals("quit"))
                         break;
-                    if (input.equals("LIST")) {
+                    if (input.equals("EXPORT")) {
+                        System.out.println("Куда сохранить?");
+                        String path = reader.readLine().trim();
+                        phoneRepository.export(new File(path));
+                        continue;
+                    } else if (input.equals("LIST")) {
                         phoneRepository.printAll();
                     } else if (Validator.isNumber(input)) {
                         String result = phoneRepository.searchByPhone(input);
