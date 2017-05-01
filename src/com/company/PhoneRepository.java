@@ -47,24 +47,24 @@ public class PhoneRepository {
     }
 
     public void export(File exportFile) throws IOException {
-
-        if (exportFile.getParentFile().exists() || exportFile.getParentFile().mkdirs()) {
-            if (!exportFile.exists())
-                exportFile.createNewFile();
-
-            JSONArray array = new JSONArray();
-            for (String key : phonesMap.keySet()) {
-                JSONObject object = new JSONObject();
-                object.put("name", phonesMap.get(key));
-                object.put("phone", key);
-                array.add(object.toJSONString());
-            }
-
-            try (FileWriter fileWriter = new FileWriter(exportFile)) {
-                fileWriter.write(array.toString());
-                fileWriter.flush();
-                fileWriter.close();
-            }
+        if (exportFile.getParentFile() != null) {
+            if (!exportFile.getParentFile().exists())
+                exportFile.getParentFile().mkdirs();
         }
+        JSONArray array = new JSONArray();
+        for (String key : phonesMap.keySet()) {
+            JSONObject object = new JSONObject();
+            object.put("name", phonesMap.get(key));
+            object.put("phone", key);
+            array.add(object.toJSONString());
+        }
+
+        try (BufferedWriter fileWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(exportFile), "UTF-8"))) {
+            fileWriter.write(array.toString());
+        }
+    }
+
+    public int size() {
+        return phonesMap.size();
     }
 }
