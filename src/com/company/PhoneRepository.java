@@ -62,7 +62,7 @@ public class PhoneRepository {
         }
 
         try (BufferedWriter fileWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(exportFile), "UTF-8"))) {
-            fileWriter.write(array.toString());
+            array.writeJSONString(fileWriter);
         }
     }
 
