@@ -30,14 +30,6 @@ public class PhoneRepositoryTest {
     }
 
     @Test
-    public void exportTest() throws IOException {
-        File exportFile = new File(EXPORT_FILE);
-        repository.export(exportFile);
-        Assert.assertTrue(exportFile.exists());
-        Assert.assertTrue(exportFile.delete());
-    }
-
-    @Test
     public void exportFileContainsCorrectJsonTest() throws IOException {
         File exportFile = new File(EXPORT_FILE);
         repository.export(exportFile);

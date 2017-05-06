@@ -49,7 +49,9 @@ public class PhoneRepository {
     public void export(File exportFile) throws IOException {
         if (exportFile.getParentFile() != null) {
             if (!exportFile.getParentFile().exists())
-                exportFile.getParentFile().mkdirs();
+                if (!exportFile.getParentFile().mkdirs()) {
+                    System.out.println("Could not create parent directory");
+                }
         }
         JSONArray array = new JSONArray();
         for (String key : phonesMap.keySet()) {
