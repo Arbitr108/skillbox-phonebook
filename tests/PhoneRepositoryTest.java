@@ -1,5 +1,7 @@
 import com.company.PhoneRepository;
 import org.json.JSONException;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -7,6 +9,7 @@ import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Created by Pavel Gorbatyuk
@@ -33,17 +36,16 @@ public class PhoneRepositoryTest {
     public void exportFileContainsCorrectJsonTest() throws IOException {
         File exportFile = new File(EXPORT_FILE);
         repository.export(exportFile);
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(exportFile), "UTF-8"))) {
-            JSONAssert.assertEquals(getExpectedJsonString(), reader.readLine(), true);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(exportFile),
+                StandardCharsets.UTF_8))) {
+            Assert.assertEquals(getExpectedJsonString(), reader.readLine());
         }
-
     }
 
     private String getExpectedJsonString() {
-        return "[\"{\\\"phone\\\":\\\"+79111111111\\\",\\\"name\\\":\\\"Pavel\\\"}\",\"{\\\"phone\\\":\\\"+79111111112\\\",\\\"name\\\":\\\"Sergey\\\"}\",\"{\\\"phone\\\":\\\"+79111111113\\\",\\\"name\\\":\\\"John\\\"}\",\"{\\\"phone\\\":\\\"+79111111114\\\",\\\"name\\\":\\\"Jane\\\"}\"]";
+        return "[{\"phone\":\"+79111111111\",\"name\":\"Pavel\"},{\"phone\":\"+79111111112\",\"name\":\"Sergey\"},{\"phone\":\"+79111111113\",\"name\":\"John\"},{\"phone\":\"+79111111114\",\"name\":\"Jane\"}]";
     }
+
 
     private void fillRepository(PhoneRepository phoneRepository) {
         phoneRepository.add("Pavel", "+79111111111");

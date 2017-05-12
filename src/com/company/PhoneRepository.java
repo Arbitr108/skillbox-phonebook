@@ -58,7 +58,7 @@ public class PhoneRepository {
             JSONObject object = new JSONObject();
             object.put("name", phonesMap.get(key));
             object.put("phone", key);
-            array.add(object.toJSONString());
+            array.add(object);
         }
 
         try (BufferedWriter fileWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(exportFile), "UTF-8"))) {
